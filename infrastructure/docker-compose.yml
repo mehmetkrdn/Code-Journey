@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: code-journey-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: codejourney
+      POSTGRES_PASSWORD: codejourney_dev
+      POSTGRES_DB: code_journey
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - code_journey_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U codejourney -d code_journey"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  code_journey_postgres_data:
