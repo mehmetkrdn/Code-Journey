@@ -9,16 +9,19 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id             String   @id @default(uuid())
-  email          String   @unique
-  username       String   @unique
-  passwordHash   String
-  displayName    String?
-  totalXp        Int      @default(0)
-  level          Int      @default(1)
-  currentStreak  Int      @default(0)
-  longestStreak  Int      @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+model User{
+  id            String @id @default(uuid()) //id primary key olarak belirlenir ve default olarak uuid() ile benzersiz bir değer atanır.
+  email         String @unique //unique eşsizdir aynı mail kullanamazlar.
+  username      String @unique
+  passwordHash  String
+  displayName   String? //String metin belirtebilirken String? boşluk veya null değerini alabilir opsiyoneldir
+  totalXp       Int @default(0)
+  level         Int @default(1)
+  CurrentStreak Int @default(0)
+  longestStreak Int @default(0)
+  hearts        Int @default(5)
+  coins         Int @default(0)
+  refreshTokenHash  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

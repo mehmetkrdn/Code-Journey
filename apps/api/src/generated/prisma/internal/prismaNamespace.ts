@@ -525,8 +525,11 @@ export const UserScalarFieldEnum = {
   displayName: 'displayName',
   totalXp: 'totalXp',
   level: 'level',
-  currentStreak: 'currentStreak',
+  CurrentStreak: 'CurrentStreak',
   longestStreak: 'longestStreak',
+  hearts: 'hearts',
+  coins: 'coins',
+  refreshTokenHash: 'refreshTokenHash',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
