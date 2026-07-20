@@ -29,15 +29,19 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   totalXp: number | null
   level: number | null
-  currentStreak: number | null
+  CurrentStreak: number | null
   longestStreak: number | null
+  hearts: number | null
+  coins: number | null
 }
 
 export type UserSumAggregateOutputType = {
   totalXp: number | null
   level: number | null
-  currentStreak: number | null
+  CurrentStreak: number | null
   longestStreak: number | null
+  hearts: number | null
+  coins: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -48,8 +52,11 @@ export type UserMinAggregateOutputType = {
   displayName: string | null
   totalXp: number | null
   level: number | null
-  currentStreak: number | null
+  CurrentStreak: number | null
   longestStreak: number | null
+  hearts: number | null
+  coins: number | null
+  refreshTokenHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,8 +69,11 @@ export type UserMaxAggregateOutputType = {
   displayName: string | null
   totalXp: number | null
   level: number | null
-  currentStreak: number | null
+  CurrentStreak: number | null
   longestStreak: number | null
+  hearts: number | null
+  coins: number | null
+  refreshTokenHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,8 +86,11 @@ export type UserCountAggregateOutputType = {
   displayName: number
   totalXp: number
   level: number
-  currentStreak: number
+  CurrentStreak: number
   longestStreak: number
+  hearts: number
+  coins: number
+  refreshTokenHash: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -87,15 +100,19 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   totalXp?: true
   level?: true
-  currentStreak?: true
+  CurrentStreak?: true
   longestStreak?: true
+  hearts?: true
+  coins?: true
 }
 
 export type UserSumAggregateInputType = {
   totalXp?: true
   level?: true
-  currentStreak?: true
+  CurrentStreak?: true
   longestStreak?: true
+  hearts?: true
+  coins?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -106,8 +123,11 @@ export type UserMinAggregateInputType = {
   displayName?: true
   totalXp?: true
   level?: true
-  currentStreak?: true
+  CurrentStreak?: true
   longestStreak?: true
+  hearts?: true
+  coins?: true
+  refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -120,8 +140,11 @@ export type UserMaxAggregateInputType = {
   displayName?: true
   totalXp?: true
   level?: true
-  currentStreak?: true
+  CurrentStreak?: true
   longestStreak?: true
+  hearts?: true
+  coins?: true
+  refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -134,8 +157,11 @@ export type UserCountAggregateInputType = {
   displayName?: true
   totalXp?: true
   level?: true
-  currentStreak?: true
+  CurrentStreak?: true
   longestStreak?: true
+  hearts?: true
+  coins?: true
+  refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -235,8 +261,11 @@ export type UserGroupByOutputType = {
   displayName: string | null
   totalXp: number
   level: number
-  currentStreak: number
+  CurrentStreak: number
   longestStreak: number
+  hearts: number
+  coins: number
+  refreshTokenHash: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -272,8 +301,11 @@ export type UserWhereInput = {
   displayName?: Prisma.StringNullableFilter<"User"> | string | null
   totalXp?: Prisma.IntFilter<"User"> | number
   level?: Prisma.IntFilter<"User"> | number
-  currentStreak?: Prisma.IntFilter<"User"> | number
+  CurrentStreak?: Prisma.IntFilter<"User"> | number
   longestStreak?: Prisma.IntFilter<"User"> | number
+  hearts?: Prisma.IntFilter<"User"> | number
+  coins?: Prisma.IntFilter<"User"> | number
+  refreshTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -286,8 +318,11 @@ export type UserOrderByWithRelationInput = {
   displayName?: Prisma.SortOrderInput | Prisma.SortOrder
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
+  refreshTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -303,8 +338,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   displayName?: Prisma.StringNullableFilter<"User"> | string | null
   totalXp?: Prisma.IntFilter<"User"> | number
   level?: Prisma.IntFilter<"User"> | number
-  currentStreak?: Prisma.IntFilter<"User"> | number
+  CurrentStreak?: Prisma.IntFilter<"User"> | number
   longestStreak?: Prisma.IntFilter<"User"> | number
+  hearts?: Prisma.IntFilter<"User"> | number
+  coins?: Prisma.IntFilter<"User"> | number
+  refreshTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }, "id" | "email" | "username">
@@ -317,8 +355,11 @@ export type UserOrderByWithAggregationInput = {
   displayName?: Prisma.SortOrderInput | Prisma.SortOrder
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
+  refreshTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -339,8 +380,11 @@ export type UserScalarWhereWithAggregatesInput = {
   displayName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   totalXp?: Prisma.IntWithAggregatesFilter<"User"> | number
   level?: Prisma.IntWithAggregatesFilter<"User"> | number
-  currentStreak?: Prisma.IntWithAggregatesFilter<"User"> | number
+  CurrentStreak?: Prisma.IntWithAggregatesFilter<"User"> | number
   longestStreak?: Prisma.IntWithAggregatesFilter<"User"> | number
+  hearts?: Prisma.IntWithAggregatesFilter<"User"> | number
+  coins?: Prisma.IntWithAggregatesFilter<"User"> | number
+  refreshTokenHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -353,8 +397,11 @@ export type UserCreateInput = {
   displayName?: string | null
   totalXp?: number
   level?: number
-  currentStreak?: number
+  CurrentStreak?: number
   longestStreak?: number
+  hearts?: number
+  coins?: number
+  refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -367,8 +414,11 @@ export type UserUncheckedCreateInput = {
   displayName?: string | null
   totalXp?: number
   level?: number
-  currentStreak?: number
+  CurrentStreak?: number
   longestStreak?: number
+  hearts?: number
+  coins?: number
+  refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -381,8 +431,11 @@ export type UserUpdateInput = {
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
   level?: Prisma.IntFieldUpdateOperationsInput | number
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  CurrentStreak?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  hearts?: Prisma.IntFieldUpdateOperationsInput | number
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -395,8 +448,11 @@ export type UserUncheckedUpdateInput = {
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
   level?: Prisma.IntFieldUpdateOperationsInput | number
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  CurrentStreak?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  hearts?: Prisma.IntFieldUpdateOperationsInput | number
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -409,8 +465,11 @@ export type UserCreateManyInput = {
   displayName?: string | null
   totalXp?: number
   level?: number
-  currentStreak?: number
+  CurrentStreak?: number
   longestStreak?: number
+  hearts?: number
+  coins?: number
+  refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -423,8 +482,11 @@ export type UserUpdateManyMutationInput = {
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
   level?: Prisma.IntFieldUpdateOperationsInput | number
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  CurrentStreak?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  hearts?: Prisma.IntFieldUpdateOperationsInput | number
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -437,8 +499,11 @@ export type UserUncheckedUpdateManyInput = {
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalXp?: Prisma.IntFieldUpdateOperationsInput | number
   level?: Prisma.IntFieldUpdateOperationsInput | number
-  currentStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  CurrentStreak?: Prisma.IntFieldUpdateOperationsInput | number
   longestStreak?: Prisma.IntFieldUpdateOperationsInput | number
+  hearts?: Prisma.IntFieldUpdateOperationsInput | number
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -451,8 +516,11 @@ export type UserCountOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
+  refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -460,8 +528,10 @@ export type UserCountOrderByAggregateInput = {
 export type UserAvgOrderByAggregateInput = {
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -472,8 +542,11 @@ export type UserMaxOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
+  refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -486,8 +559,11 @@ export type UserMinOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
+  refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -495,8 +571,10 @@ export type UserMinOrderByAggregateInput = {
 export type UserSumOrderByAggregateInput = {
   totalXp?: Prisma.SortOrder
   level?: Prisma.SortOrder
-  currentStreak?: Prisma.SortOrder
+  CurrentStreak?: Prisma.SortOrder
   longestStreak?: Prisma.SortOrder
+  hearts?: Prisma.SortOrder
+  coins?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -529,8 +607,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   displayName?: boolean
   totalXp?: boolean
   level?: boolean
-  currentStreak?: boolean
+  CurrentStreak?: boolean
   longestStreak?: boolean
+  hearts?: boolean
+  coins?: boolean
+  refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -543,8 +624,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   displayName?: boolean
   totalXp?: boolean
   level?: boolean
-  currentStreak?: boolean
+  CurrentStreak?: boolean
   longestStreak?: boolean
+  hearts?: boolean
+  coins?: boolean
+  refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -557,8 +641,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   displayName?: boolean
   totalXp?: boolean
   level?: boolean
-  currentStreak?: boolean
+  CurrentStreak?: boolean
   longestStreak?: boolean
+  hearts?: boolean
+  coins?: boolean
+  refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -571,13 +658,16 @@ export type UserSelectScalar = {
   displayName?: boolean
   totalXp?: boolean
   level?: boolean
-  currentStreak?: boolean
+  CurrentStreak?: boolean
   longestStreak?: boolean
+  hearts?: boolean
+  coins?: boolean
+  refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "passwordHash" | "displayName" | "totalXp" | "level" | "currentStreak" | "longestStreak" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "passwordHash" | "displayName" | "totalXp" | "level" | "CurrentStreak" | "longestStreak" | "hearts" | "coins" | "refreshTokenHash" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -590,8 +680,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     displayName: string | null
     totalXp: number
     level: number
-    currentStreak: number
+    CurrentStreak: number
     longestStreak: number
+    hearts: number
+    coins: number
+    refreshTokenHash: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1024,8 +1117,11 @@ export interface UserFieldRefs {
   readonly displayName: Prisma.FieldRef<"User", 'String'>
   readonly totalXp: Prisma.FieldRef<"User", 'Int'>
   readonly level: Prisma.FieldRef<"User", 'Int'>
-  readonly currentStreak: Prisma.FieldRef<"User", 'Int'>
+  readonly CurrentStreak: Prisma.FieldRef<"User", 'Int'>
   readonly longestStreak: Prisma.FieldRef<"User", 'Int'>
+  readonly hearts: Prisma.FieldRef<"User", 'Int'>
+  readonly coins: Prisma.FieldRef<"User", 'Int'>
+  readonly refreshTokenHash: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
