@@ -1,4 +1,3 @@
-Tabii. Aşağıdaki sürüm daha sade, okunabilir ve yine de teknik olarak eksiksizdir.
 
 ````md
 # Code Journey
