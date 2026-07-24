@@ -59,6 +59,7 @@ export type UserMinAggregateOutputType = {
   refreshTokenHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  lastActivityDate: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -76,6 +77,7 @@ export type UserMaxAggregateOutputType = {
   refreshTokenHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  lastActivityDate: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -93,6 +95,7 @@ export type UserCountAggregateOutputType = {
   refreshTokenHash: number
   createdAt: number
   updatedAt: number
+  lastActivityDate: number
   _all: number
 }
 
@@ -130,6 +133,7 @@ export type UserMinAggregateInputType = {
   refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
+  lastActivityDate?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -147,6 +151,7 @@ export type UserMaxAggregateInputType = {
   refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
+  lastActivityDate?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -164,6 +169,7 @@ export type UserCountAggregateInputType = {
   refreshTokenHash?: true
   createdAt?: true
   updatedAt?: true
+  lastActivityDate?: true
   _all?: true
 }
 
@@ -268,6 +274,7 @@ export type UserGroupByOutputType = {
   refreshTokenHash: string | null
   createdAt: Date
   updatedAt: Date
+  lastActivityDate: Date | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -308,6 +315,7 @@ export type UserWhereInput = {
   refreshTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  lastActivityDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -325,6 +333,7 @@ export type UserOrderByWithRelationInput = {
   refreshTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastActivityDate?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -345,6 +354,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   refreshTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  lastActivityDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -362,6 +372,7 @@ export type UserOrderByWithAggregationInput = {
   refreshTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastActivityDate?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -387,6 +398,7 @@ export type UserScalarWhereWithAggregatesInput = {
   refreshTokenHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  lastActivityDate?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -404,6 +416,7 @@ export type UserCreateInput = {
   refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastActivityDate?: Date | string | null
 }
 
 export type UserUncheckedCreateInput = {
@@ -421,6 +434,7 @@ export type UserUncheckedCreateInput = {
   refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastActivityDate?: Date | string | null
 }
 
 export type UserUpdateInput = {
@@ -438,6 +452,7 @@ export type UserUpdateInput = {
   refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateInput = {
@@ -455,6 +470,7 @@ export type UserUncheckedUpdateInput = {
   refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCreateManyInput = {
@@ -472,6 +488,7 @@ export type UserCreateManyInput = {
   refreshTokenHash?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastActivityDate?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -489,6 +506,7 @@ export type UserUpdateManyMutationInput = {
   refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -506,6 +524,7 @@ export type UserUncheckedUpdateManyInput = {
   refreshTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -523,6 +542,7 @@ export type UserCountOrderByAggregateInput = {
   refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastActivityDate?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -549,6 +569,7 @@ export type UserMaxOrderByAggregateInput = {
   refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastActivityDate?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -566,6 +587,7 @@ export type UserMinOrderByAggregateInput = {
   refreshTokenHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastActivityDate?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -597,6 +619,10 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -614,6 +640,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  lastActivityDate?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -631,6 +658,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  lastActivityDate?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -648,6 +676,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  lastActivityDate?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -665,9 +694,10 @@ export type UserSelectScalar = {
   refreshTokenHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  lastActivityDate?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "passwordHash" | "displayName" | "totalXp" | "level" | "CurrentStreak" | "longestStreak" | "hearts" | "coins" | "refreshTokenHash" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "passwordHash" | "displayName" | "totalXp" | "level" | "CurrentStreak" | "longestStreak" | "hearts" | "coins" | "refreshTokenHash" | "createdAt" | "updatedAt" | "lastActivityDate", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -687,6 +717,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     refreshTokenHash: string | null
     createdAt: Date
     updatedAt: Date
+    lastActivityDate: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1124,6 +1155,7 @@ export interface UserFieldRefs {
   readonly refreshTokenHash: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastActivityDate: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

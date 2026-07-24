@@ -84,7 +84,8 @@ export const UserScalarFieldEnum = {
   coins: 'coins',
   refreshTokenHash: 'refreshTokenHash',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  lastActivityDate: 'lastActivityDate'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

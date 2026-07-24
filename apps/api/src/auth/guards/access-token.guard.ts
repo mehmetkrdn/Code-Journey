@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
@@ -23,6 +24,7 @@ export type AuthenticatedRequest = Request & {
 export class AccessTokenGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async canActivate(
@@ -41,9 +43,17 @@ export class AccessTokenGuard implements CanActivate {
     }
 
     try {
+      const accessTokenSecret =
+        this.configService.getOrThrow<string>(
+          'JWT_ACCESS_SECRET',
+        );
+
       const payload =
         await this.jwtService.verifyAsync<AccessTokenPayload>(
           token,
+          {
+            secret: accessTokenSecret,
+          },
         );
 
       request.user = payload;
@@ -66,8 +76,13 @@ export class AccessTokenGuard implements CanActivate {
       return undefined;
     }
 
-    const [type, token] = authorization.split(' ');
+    const [type, token] =
+      authorization.trim().split(/\s+/);
 
-    return type === 'Bearer' ? token : undefined;
+    return type === 'Bearer'
+      ? token
+      : undefined;
   }
 }
+
+// Bu AccessTokenGuard, gelen HTTP isteklerinde Authorization başlığında bulunan Bearer token'ı doğrulamak için kullanılır. Eğer token geçerli ise, payload bilgisi request nesnesine eklenir ve istek işleme devam eder. Aksi takdirde UnauthorizedException fırlatılır.

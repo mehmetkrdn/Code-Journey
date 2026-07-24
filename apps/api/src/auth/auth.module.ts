@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenGuard } from './guards/access-token.guard';
@@ -6,7 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import type { StringValue } from 'ms';
-
+@Global() //// JwtService'in her yerden erişilmesini sağlar
 @Module({
   imports: [
     ConfigModule,
