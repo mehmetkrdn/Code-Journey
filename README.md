@@ -386,21 +386,8 @@ Mobil uygulamadaki kullanıcı oturumlarını ve korumalı endpoint erişimini y
 
 Backend endpointlerini mobil arayüz tamamlanmadan önce tarayıcı üzerinden test etmek için kullanıldı.
 
-## Güvenlik Notları
 
-- Parolalar düz metin olarak saklanmaz.
-- Parola hashleri API cevaplarında dönmez.
-- Refresh tokenın yalnızca hashlenmiş hali saklanır.
-- Access ve refresh token için farklı secret değerleri kullanılır.
-- Kullanıcı XP, coin ve heart değerlerini profil endpointinden değiştiremez.
-- Kilitli dersler tamamlanamaz.
-- Aynı ders ikinci kez XP veya coin kazandırmaz.
-- Test endpointleri production ortamında çalışmaz.
-- `.env` dosyaları Git tarafından takip edilmez.
-
-## Sonraki Aşama
-
-Sıradaki bölüm:
+## Sıradaki Aşama
 
 ```text
 Challenge System
