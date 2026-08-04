@@ -10,6 +10,8 @@ import { ProgressionModule } from './progression/progression.module';
 import { HeartsModule } from './hearts/hearts.module';
 import { CoinsModule } from './coins/coins.module';
 import { StreakModule } from './streak/streak.module';
+import { CoursesModule } from './courses/courses.module';
+import { LessonsModule } from './lessons/lessons.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { StreakModule } from './streak/streak.module';
     HeartsModule,
     CoinsModule,
     StreakModule,
+    CoursesModule,
+    LessonsModule,
   ],
   controllers: [AppController],
 })

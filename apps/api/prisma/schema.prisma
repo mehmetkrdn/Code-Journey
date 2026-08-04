@@ -25,4 +25,83 @@ model User{
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   lastActivityDate DateTime?
+  lessonProgresses UserLessonProgress[]
+}
+
+model Course{
+  id  String @id @default(uuid()) //id primary key, default olarak uuid ile benzersiz değer atanır
+  title String //Kursun adı
+  slug String @unique //url ve api sorgularında kullanıılacak benzersiz alan
+  description String?
+  icon String?
+  order Int @default(0) //default değeri 0
+  isPublished Boolean @default(false)//default değeri false. kursun kullanıcılarda görünür olup olmadığını belirleriz
+
+  sections Section[] //Bu kayda bağlı birden fazla bölüm (Section) olabilir. ilişkiler için kullanılır
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  
+}
+
+model Section { //Kurs içindeki ana konu gruplarını temsil eder: Java temelleri,oop,kontrol yapıları gibi
+  id          String    @id @default(uuid())
+  title       String //bölüm adı
+  description String?
+  order       Int       @default(0)
+  isPublished Boolean   @default(false)
+
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade) //courseId alanının, Course modelindeki id ile bağlandığını belirtir. cpırse sanaldır fiziki bir sütün kolon oluşulmaz. dbde sadece course ıd tutulur
+
+  lessons     Lesson[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([courseId])
+}
+
+model Lesson { //dersin asıl içeriğini tutar 
+  id             String               @id @default(uuid())
+  title          String
+  slug           String
+  description    String?
+  content        String
+  order          Int                  @default(0)
+  xpReward       Int                  @default(10) //ders sonu kazanılacak ödüller
+  coinReward     Int                  @default(5)
+  estimatedTime  Int? //tahmini dersi tamamlama süresi
+  isPublished    Boolean              @default(false)
+
+  sectionId      String
+  section        Section              @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  userProgress   UserLessonProgress[]
+
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@unique([sectionId, slug])
+  @@index([sectionId])
+}
+
+model UserLessonProgress { //kullanıcının ders ilerlemesini tutar.
+  id          String    @id @default(uuid())
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+
+  userId      String
+  lessonId    String
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade) //userId alanını User tablosundaki id ile eşler. kişiye özel verileri getirmek için kullanırız bu ilişki ağını
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade) //lessonId alanını Lesson tablosundaki id ile eşler.
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, lessonId]) //kullanıcının dersi tekrar tamamlayıp xp kazanmasını engeller.
+  @@index([userId])
+  @@index([lessonId])
 }

@@ -10,4 +10,4 @@ import { CoinsService } from './coins.service';
   providers: [CoinsService],
   exports: [CoinsService],
 })
-export class CoinsModule {}    
+export class CoinsModule {}

@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import {
   ApiBadRequestResponse,
@@ -32,9 +25,7 @@ import {
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('register')
   @ApiOperation({
@@ -47,12 +38,9 @@ export class AuthController {
     description: 'Gönderilen bilgiler geçersiz',
   })
   @ApiConflictResponse({
-    description:
-      'E-posta veya kullanıcı adı zaten kullanılıyor',
+    description: 'E-posta veya kullanıcı adı zaten kullanılıyor',
   })
-  async register(
-    @Body() registerDto: RegisterDto,
-  ) {
+  async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
@@ -61,44 +49,33 @@ export class AuthController {
     summary: 'Kullanıcı girişi yapar',
   })
   @ApiOkResponse({
-    description:
-      'Giriş başarılı ve tokenlar oluşturuldu',
+    description: 'Giriş başarılı ve tokenlar oluşturuldu',
   })
   @ApiBadRequestResponse({
     description: 'Gönderilen bilgiler geçersiz',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'E-posta, kullanıcı adı veya şifre hatalı',
+    description: 'E-posta, kullanıcı adı veya şifre hatalı',
   })
-  async login(
-    @Body() loginDto: LoginDto,
-  ) {
+  async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
   @Post('refresh')
   @ApiOperation({
-    summary:
-      'Refresh token kullanarak yeni tokenlar üretir',
+    summary: 'Refresh token kullanarak yeni tokenlar üretir',
   })
   @ApiOkResponse({
-    description:
-      'Access ve refresh token başarıyla yenilendi',
+    description: 'Access ve refresh token başarıyla yenilendi',
   })
   @ApiBadRequestResponse({
     description: 'Refresh token alanı geçersiz',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Refresh token geçersiz veya süresi dolmuş',
+    description: 'Refresh token geçersiz veya süresi dolmuş',
   })
-  async refresh(
-    @Body() refreshTokenDto: RefreshTokenDto,
-  ) {
-    return this.authService.refresh(
-      refreshTokenDto.refreshToken,
-    );
+  async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refresh(refreshTokenDto.refreshToken);
   }
 
   @Post('logout')
@@ -111,34 +88,25 @@ export class AuthController {
     description: 'Çıkış işlemi başarılı',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
-  async logout(
-    @Req() request: AuthenticatedRequest,
-  ) {
-    return this.authService.logout(
-      request.user.sub,
-    );
+  async logout(@Req() request: AuthenticatedRequest) {
+    return this.authService.logout(request.user.sub);
   }
 
   @Get('me')
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının token bilgilerini getirir',
+    summary: 'Giriş yapan kullanıcının token bilgilerini getirir',
   })
   @ApiOkResponse({
     description: 'Token geçerli',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Token bulunamadı, geçersiz veya süresi dolmuş',
+    description: 'Token bulunamadı, geçersiz veya süresi dolmuş',
   })
-  getProfile(
-    @Req() request: AuthenticatedRequest,
-  ) {
+  getProfile(@Req() request: AuthenticatedRequest) {
     return {
       success: true,
       data: {

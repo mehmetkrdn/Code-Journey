@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import {
   ApiBearerAuth,
@@ -26,55 +20,39 @@ import { StreakService } from './streak.service';
 @UseGuards(AccessTokenGuard)
 @Controller('streak')
 export class StreakController {
-  constructor(
-    private readonly streakService: StreakService,
-  ) {}
+  constructor(private readonly streakService: StreakService) {}
 
   @Get('me')
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının günlük seri bilgisini getirir',
+    summary: 'Giriş yapan kullanıcının günlük seri bilgisini getirir',
   })
   @ApiOkResponse({
-    description:
-      'Günlük seri bilgisi başarıyla getirildi',
+    description: 'Günlük seri bilgisi başarıyla getirildi',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı bulunamadı',
   })
-  getStreak(
-    @Req() request: AuthenticatedRequest,
-  ) {
-    return this.streakService.getStreak(
-      request.user.sub,
-    );
+  getStreak(@Req() request: AuthenticatedRequest) {
+    return this.streakService.getStreak(request.user.sub);
   }
 
   @Post('check-in')
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının günlük aktivitesini kaydeder',
+    summary: 'Giriş yapan kullanıcının günlük aktivitesini kaydeder',
   })
   @ApiOkResponse({
-    description:
-      'Günlük aktivite başarıyla kaydedildi',
+    description: 'Günlük aktivite başarıyla kaydedildi',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı bulunamadı',
   })
-  checkIn(
-    @Req() request: AuthenticatedRequest,
-  ) {
-    return this.streakService.checkIn(
-      request.user.sub,
-    );
+  checkIn(@Req() request: AuthenticatedRequest) {
+    return this.streakService.checkIn(request.user.sub);
   }
 }

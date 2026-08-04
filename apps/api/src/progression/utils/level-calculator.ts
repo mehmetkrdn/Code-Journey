@@ -11,14 +11,11 @@ export function calculateLevel(totalXp: number): number {
 export function getLevelProgress(totalXp: number) {
   const level = calculateLevel(totalXp);
 
-  const currentLevelStartXp =
-    (level - 1) * XP_PER_LEVEL;
+  const currentLevelStartXp = (level - 1) * XP_PER_LEVEL;
 
-  const nextLevelXp =
-    level * XP_PER_LEVEL;
+  const nextLevelXp = level * XP_PER_LEVEL;
 
-  const currentLevelXp =
-    totalXp - currentLevelStartXp;
+  const currentLevelXp = totalXp - currentLevelStartXp;
 
   return {
     level,

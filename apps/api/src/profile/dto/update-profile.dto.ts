@@ -18,8 +18,7 @@ export class UpdateProfileDto {
     message: 'Görünen ad metin olmalıdır.',
   })
   @MaxLength(50, {
-    message:
-      'Görünen ad en fazla 50 karakter olabilir.',
+    message: 'Görünen ad en fazla 50 karakter olabilir.',
   })
   displayName?: string;
 
@@ -34,12 +33,10 @@ export class UpdateProfileDto {
     message: 'Kullanıcı adı metin olmalıdır.',
   })
   @Length(3, 30, {
-    message:
-      'Kullanıcı adı 3 ile 30 karakter arasında olmalıdır.',
+    message: 'Kullanıcı adı 3 ile 30 karakter arasında olmalıdır.',
   })
   @Matches(/^[a-zA-Z0-9_]+$/, {
-    message:
-      'Kullanıcı adı yalnızca harf, sayı ve alt çizgi içerebilir.',
+    message: 'Kullanıcı adı yalnızca harf, sayı ve alt çizgi içerebilir.',
   })
   username?: string;
 }

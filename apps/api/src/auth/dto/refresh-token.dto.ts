@@ -1,8 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 //ValidationPipe, DTO üzerinde tanımlanan kuralları gelen tüm isteklerde uygular.
 export class RefreshTokenDto {
   @ApiProperty({

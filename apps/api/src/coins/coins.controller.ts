@@ -39,43 +39,33 @@ export class CoinsController {
 
   @Get('me')
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının jeton bilgisini getirir',
+    summary: 'Giriş yapan kullanıcının jeton bilgisini getirir',
   })
   @ApiOkResponse({
-    description:
-      'Jeton bilgisi başarıyla getirildi',
+    description: 'Jeton bilgisi başarıyla getirildi',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı bulunamadı',
   })
-  getCoins(
-    @Req() request: AuthenticatedRequest,
-  ) {
-    return this.coinsService.getCoins(
-      request.user.sub,
-    );
+  getCoins(@Req() request: AuthenticatedRequest) {
+    return this.coinsService.getCoins(request.user.sub);
   }
 
   @Post('spend')
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının jeton harcamasını sağlar',
+    summary: 'Giriş yapan kullanıcının jeton harcamasını sağlar',
   })
   @ApiOkResponse({
     description: 'Jeton başarıyla harcandı',
   })
   @ApiBadRequestResponse({
-    description:
-      'Jeton miktarı geçersiz veya kullanıcının yeterli jetonu yok',
+    description: 'Jeton miktarı geçersiz veya kullanıcının yeterli jetonu yok',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı bulunamadı',
@@ -84,16 +74,12 @@ export class CoinsController {
     @Req() request: AuthenticatedRequest,
     @Body() spendCoinsDto: SpendCoinsDto,
   ) {
-    return this.coinsService.spendCoins(
-      request.user.sub,
-      spendCoinsDto.amount,
-    );
+    return this.coinsService.spendCoins(request.user.sub, spendCoinsDto.amount);
   }
 
   @Post('test-add')
   @ApiOperation({
-    summary:
-      'Geliştirme ortamında kullanıcıya test jetonu ekler',
+    summary: 'Geliştirme ortamında kullanıcıya test jetonu ekler',
   })
   @ApiOkResponse({
     description: 'Test jetonu başarıyla eklendi',
@@ -102,31 +88,21 @@ export class CoinsController {
     description: 'Jeton miktarı geçersiz',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı veya geçersiz',
+    description: 'Access token bulunamadı veya geçersiz',
   })
   @ApiNotFoundResponse({
-    description:
-      'Endpoint veya kullanıcı bulunamadı',
+    description: 'Endpoint veya kullanıcı bulunamadı',
   })
   addTestCoins(
     @Req() request: AuthenticatedRequest,
     @Body() addCoinsDto: AddCoinsDto,
   ) {
-    const environment =
-      this.configService.get<string>(
-        'NODE_ENV',
-      );
+    const environment = this.configService.get<string>('NODE_ENV');
 
     if (environment === 'production') {
-      throw new NotFoundException(
-        'Endpoint bulunamadı.',
-      );
+      throw new NotFoundException('Endpoint bulunamadı.');
     }
 
-    return this.coinsService.addCoins(
-      request.user.sub,
-      addCoinsDto.amount,
-    );
+    return this.coinsService.addCoins(request.user.sub, addCoinsDto.amount);
   }
 }

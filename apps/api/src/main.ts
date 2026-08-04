@@ -1,9 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import {
-  DocumentBuilder,
-  SwaggerModule,
-} from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
@@ -32,43 +29,22 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addBearerAuth()
-    .addTag(
-      'Health',
-      'Backend ve veritabanı sağlık kontrolü',
-    )
-    .addTag(
-      'Users',
-      'Kullanıcı işlemleri',
-    )
-    .addTag(
-      'Auth',
-      'Kayıt ve giriş işlemleri',
-    )
+    .addTag('Health', 'Backend ve veritabanı sağlık kontrolü')
+    .addTag('Users', 'Kullanıcı işlemleri')
+    .addTag('Auth', 'Kayıt ve giriş işlemleri')
     .build();
 
-  const swaggerDocument =
-    SwaggerModule.createDocument(
-      app,
-      swaggerConfig,
-    );
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup(
-    'api/docs',
-    app,
-    swaggerDocument,
-  );
+  SwaggerModule.setup('api/docs', app, swaggerDocument);
 
   const port = process.env.PORT ?? 3001;
 
   await app.listen(port);
 
-  console.log(
-    `Code Journey API: http://localhost:${port}/api`,
-  );
+  console.log(`Code Journey API: http://localhost:${port}/api`);
 
-  console.log(
-    `Swagger UI: http://localhost:${port}/api/docs`,
-  );
+  console.log(`Swagger UI: http://localhost:${port}/api/docs`);
 }
 
 void bootstrap();

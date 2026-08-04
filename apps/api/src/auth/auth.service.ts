@@ -25,28 +25,19 @@ export class AuthService {
     const username = registerDto.username.trim().toLowerCase();
     const displayName = registerDto.displayName?.trim();
 
-    const existingEmail =
-      await this.usersService.findByEmail(email);
+    const existingEmail = await this.usersService.findByEmail(email);
 
     if (existingEmail) {
-      throw new ConflictException(
-        'Bu e-posta adresi zaten kullanılıyor.',
-      );
+      throw new ConflictException('Bu e-posta adresi zaten kullanılıyor.');
     }
 
-    const existingUsername =
-      await this.usersService.findByUsername(username);
+    const existingUsername = await this.usersService.findByUsername(username);
 
     if (existingUsername) {
-      throw new ConflictException(
-        'Bu kullanıcı adı zaten kullanılıyor.',
-      );
+      throw new ConflictException('Bu kullanıcı adı zaten kullanılıyor.');
     }
 
-    const passwordHash = await bcrypt.hash(
-      registerDto.password,
-      12,
-    );
+    const passwordHash = await bcrypt.hash(registerDto.password, 12);
 
     const user = await this.usersService.create({
       email,
@@ -63,14 +54,9 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    const identifier = loginDto.identifier
-      .trim()
-      .toLowerCase();
+    const identifier = loginDto.identifier.trim().toLowerCase();
 
-    const user =
-      await this.usersService.findByEmailOrUsername(
-        identifier,
-      );
+    const user = await this.usersService.findByEmailOrUsername(identifier);
 
     if (!user) {
       throw new UnauthorizedException(
@@ -95,18 +81,11 @@ export class AuthService {
       username: user.username,
     };
 
-    const tokens =
-      await this.generateTokens(payload);
+    const tokens = await this.generateTokens(payload);
 
-    const refreshTokenHash = await bcrypt.hash(
-      tokens.refreshToken,
-      12,
-    );
+    const refreshTokenHash = await bcrypt.hash(tokens.refreshToken, 12);
 
-    await this.usersService.updateRefreshTokenHash(
-      user.id,
-      refreshTokenHash,
-    );
+    await this.usersService.updateRefreshTokenHash(user.id, refreshTokenHash);
 
     return {
       success: true,
@@ -129,41 +108,31 @@ export class AuthService {
       },
     };
   }
-  private async generateTokens(
-    payload: TokenPayload,
-  ) {
+  private async generateTokens(payload: TokenPayload) {
     const accessSecret =
-      this.configService.getOrThrow<string>(
-        'JWT_ACCESS_SECRET',
-      );
+      this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
 
     const refreshSecret =
-      this.configService.getOrThrow<string>(
-        'JWT_REFRESH_SECRET',
-      );
+      this.configService.getOrThrow<string>('JWT_REFRESH_SECRET');
 
-    const accessExpiresIn =
-    (this.configService.get<string>(
+    const accessExpiresIn = (this.configService.get<string>(
       'JWT_ACCESS_EXPIRES_IN',
     ) ?? '15m') as StringValue;
 
-
-    const refreshExpiresIn =
-    (this.configService.get<string>(
+    const refreshExpiresIn = (this.configService.get<string>(
       'JWT_REFRESH_EXPIRES_IN',
     ) ?? '7d') as StringValue;
 
-    const [accessToken, refreshToken] =
-      await Promise.all([
-        this.jwtService.signAsync(payload, {
-          secret: accessSecret,
-          expiresIn: accessExpiresIn,
-        }),
-        this.jwtService.signAsync(payload, {
-          secret: refreshSecret,
-          expiresIn: refreshExpiresIn,
-        }),
-      ]);
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: accessSecret,
+        expiresIn: accessExpiresIn,
+      }),
+      this.jwtService.signAsync(payload, {
+        secret: refreshSecret,
+        expiresIn: refreshExpiresIn,
+      }),
+    ]);
 
     return {
       accessToken,
@@ -172,45 +141,33 @@ export class AuthService {
   }
   async refresh(refreshToken: string) {
     const refreshSecret =
-      this.configService.getOrThrow<string>(
-        'JWT_REFRESH_SECRET',
-      );
+      this.configService.getOrThrow<string>('JWT_REFRESH_SECRET');
 
     let payload: TokenPayload;
 
     try {
-      payload =
-        await this.jwtService.verifyAsync<TokenPayload>(
-          refreshToken,
-          {
-            secret: refreshSecret,
-          },
-        );
+      payload = await this.jwtService.verifyAsync<TokenPayload>(refreshToken, {
+        secret: refreshSecret,
+      });
     } catch {
       throw new UnauthorizedException(
         'Refresh token geçersiz veya süresi dolmuş.',
       );
     }
 
-    const user =
-      await this.usersService.findById(payload.sub);
+    const user = await this.usersService.findById(payload.sub);
 
     if (!user || !user.refreshTokenHash) {
-      throw new UnauthorizedException(
-        'Geçerli bir oturum bulunamadı.',
-      );
+      throw new UnauthorizedException('Geçerli bir oturum bulunamadı.');
     }
 
-    const isRefreshTokenValid =
-      await bcrypt.compare(
-        refreshToken,
-        user.refreshTokenHash,
-      );
+    const isRefreshTokenValid = await bcrypt.compare(
+      refreshToken,
+      user.refreshTokenHash,
+    );
 
     if (!isRefreshTokenValid) {
-      throw new UnauthorizedException(
-        'Refresh token geçersiz.',
-      );
+      throw new UnauthorizedException('Refresh token geçersiz.');
     }
 
     const newPayload: TokenPayload = {
@@ -219,14 +176,9 @@ export class AuthService {
       username: user.username,
     };
 
-    const newTokens =
-      await this.generateTokens(newPayload);
+    const newTokens = await this.generateTokens(newPayload);
 
-    const newRefreshTokenHash =
-      await bcrypt.hash(
-        newTokens.refreshToken,
-        12,
-      );
+    const newRefreshTokenHash = await bcrypt.hash(newTokens.refreshToken, 12);
 
     await this.usersService.updateRefreshTokenHash(
       user.id,
@@ -240,19 +192,13 @@ export class AuthService {
     };
   }
   async logout(userId: string) {
-    const user =
-      await this.usersService.findById(userId);
+    const user = await this.usersService.findById(userId);
 
     if (!user) {
-      throw new UnauthorizedException(
-        'Kullanıcı bulunamadı.',
-      );
+      throw new UnauthorizedException('Kullanıcı bulunamadı.');
     }
 
-    await this.usersService.updateRefreshTokenHash(
-      userId,
-      null,
-    );
+    await this.usersService.updateRefreshTokenHash(userId, null);
 
     return {
       success: true,

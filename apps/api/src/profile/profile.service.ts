@@ -9,20 +9,13 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfileService {
-  constructor(
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   async getProfile(userId: string) {
-    const user =
-      await this.usersService.findProfileById(
-        userId,
-      );
+    const user = await this.usersService.findProfileById(userId);
 
     if (!user) {
-      throw new NotFoundException(
-        'Kullanıcı profili bulunamadı.',
-      );
+      throw new NotFoundException('Kullanıcı profili bulunamadı.');
     }
 
     return {
@@ -33,17 +26,11 @@ export class ProfileService {
     };
   }
 
-  async updateProfile(
-    userId: string,
-    updateProfileDto: UpdateProfileDto,
-  ) {
-    const currentUser =
-      await this.usersService.findById(userId);
+  async updateProfile(userId: string, updateProfileDto: UpdateProfileDto) {
+    const currentUser = await this.usersService.findById(userId);
 
     if (!currentUser) {
-      throw new NotFoundException(
-        'Kullanıcı profili bulunamadı.',
-      );
+      throw new NotFoundException('Kullanıcı profili bulunamadı.');
     }
 
     const updateData: {
@@ -52,39 +39,28 @@ export class ProfileService {
     } = {};
 
     if (updateProfileDto.displayName !== undefined) {
-      updateData.displayName =
-        updateProfileDto.displayName.trim();
+      updateData.displayName = updateProfileDto.displayName.trim();
     }
 
     if (updateProfileDto.username !== undefined) {
-      const normalizedUsername =
-        updateProfileDto.username
-          .trim()
-          .toLowerCase();
+      const normalizedUsername = updateProfileDto.username.trim().toLowerCase();
 
-      if (
-        normalizedUsername !== currentUser.username
-      ) {
+      if (normalizedUsername !== currentUser.username) {
         const usernameOwner =
-          await this.usersService.findByUsername(
-            normalizedUsername,
-          );
+          await this.usersService.findByUsername(normalizedUsername);
 
         if (usernameOwner) {
-          throw new ConflictException(
-            'Bu kullanıcı adı zaten kullanılıyor.',
-          );
+          throw new ConflictException('Bu kullanıcı adı zaten kullanılıyor.');
         }
       }
 
       updateData.username = normalizedUsername;
     }
 
-    const updatedUser =
-      await this.usersService.updateProfile(
-        userId,
-        updateData,
-      );
+    const updatedUser = await this.usersService.updateProfile(
+      userId,
+      updateData,
+    );
 
     return {
       success: true,

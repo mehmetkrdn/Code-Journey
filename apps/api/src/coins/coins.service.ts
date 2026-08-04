@@ -8,20 +8,13 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class CoinsService {
-  constructor(
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   async getCoins(userId: string) {
-    const user =
-      await this.usersService.findCoinsByUserId(
-        userId,
-      );
+    const user = await this.usersService.findCoinsByUserId(userId);
 
     if (!user) {
-      throw new NotFoundException(
-        'Kullanıcı bulunamadı.',
-      );
+      throw new NotFoundException('Kullanıcı bulunamadı.');
     }
 
     return {
@@ -32,26 +25,14 @@ export class CoinsService {
     };
   }
 
-  async addCoins(
-    userId: string,
-    amount: number,
-  ) {
-    const user =
-      await this.usersService.findCoinsByUserId(
-        userId,
-      );
+  async addCoins(userId: string, amount: number) {
+    const user = await this.usersService.findCoinsByUserId(userId);
 
     if (!user) {
-      throw new NotFoundException(
-        'Kullanıcı bulunamadı.',
-      );
+      throw new NotFoundException('Kullanıcı bulunamadı.');
     }
 
-    const updatedUser =
-      await this.usersService.addCoins(
-        userId,
-        amount,
-      );
+    const updatedUser = await this.usersService.addCoins(userId, amount);
 
     return {
       success: true,
@@ -64,32 +45,18 @@ export class CoinsService {
     };
   }
 
-  async spendCoins(
-    userId: string,
-    amount: number,
-  ) {
-    const user =
-      await this.usersService.findCoinsByUserId(
-        userId,
-      );
+  async spendCoins(userId: string, amount: number) {
+    const user = await this.usersService.findCoinsByUserId(userId);
 
     if (!user) {
-      throw new NotFoundException(
-        'Kullanıcı bulunamadı.',
-      );
+      throw new NotFoundException('Kullanıcı bulunamadı.');
     }
 
     if (user.coins < amount) {
-      throw new BadRequestException(
-        'Yeterli jetonunuz bulunmuyor.',
-      );
+      throw new BadRequestException('Yeterli jetonunuz bulunmuyor.');
     }
 
-    const updatedUser =
-      await this.usersService.spendCoins(
-        userId,
-        amount,
-      );
+    const updatedUser = await this.usersService.spendCoins(userId, amount);
 
     if (!updatedUser) {
       throw new BadRequestException(

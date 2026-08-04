@@ -33,8 +33,7 @@ export class RegisterDto {
     message: 'Kullanıcı adı en fazla 30 karakter olabilir.',
   })
   @Matches(/^[a-zA-Z0-9_]+$/, {
-    message:
-      'Kullanıcı adı yalnızca harf, rakam ve alt çizgi içerebilir.',
+    message: 'Kullanıcı adı yalnızca harf, rakam ve alt çizgi içerebilir.',
   })
   username: string;
 

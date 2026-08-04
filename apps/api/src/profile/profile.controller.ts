@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
 
 import {
   ApiBadRequestResponse,
@@ -28,57 +21,44 @@ import { ProfileService } from './profile.service';
 @ApiTags('Profile')
 @Controller('profile')
 export class ProfileController {
-  constructor(
-    private readonly profileService: ProfileService,
-  ) {}
+  constructor(private readonly profileService: ProfileService) {}
 
   @Get()
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının profil bilgilerini getirir',
+    summary: 'Giriş yapan kullanıcının profil bilgilerini getirir',
   })
   @ApiOkResponse({
-    description:
-      'Profil bilgileri başarıyla getirildi',
+    description: 'Profil bilgileri başarıyla getirildi',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı, geçersiz veya süresi dolmuş',
+    description: 'Access token bulunamadı, geçersiz veya süresi dolmuş',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı profili bulunamadı',
   })
-  async getProfile(
-    @Req() request: AuthenticatedRequest,
-  ) {
-    return this.profileService.getProfile(
-      request.user.sub,
-    );
+  async getProfile(@Req() request: AuthenticatedRequest) {
+    return this.profileService.getProfile(request.user.sub);
   }
 
   @Patch()
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary:
-      'Giriş yapan kullanıcının profilini günceller',
+    summary: 'Giriş yapan kullanıcının profilini günceller',
   })
   @ApiOkResponse({
     description: 'Profil başarıyla güncellendi',
   })
   @ApiBadRequestResponse({
-    description:
-      'Gönderilen profil bilgileri geçersiz',
+    description: 'Gönderilen profil bilgileri geçersiz',
   })
   @ApiConflictResponse({
-    description:
-      'Kullanıcı adı başka bir kullanıcı tarafından kullanılıyor',
+    description: 'Kullanıcı adı başka bir kullanıcı tarafından kullanılıyor',
   })
   @ApiUnauthorizedResponse({
-    description:
-      'Access token bulunamadı, geçersiz veya süresi dolmuş',
+    description: 'Access token bulunamadı, geçersiz veya süresi dolmuş',
   })
   @ApiNotFoundResponse({
     description: 'Kullanıcı profili bulunamadı',

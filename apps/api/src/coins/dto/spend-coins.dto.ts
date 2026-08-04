@@ -1,9 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsInt,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsInt, Max, Min } from 'class-validator';
 
 export class SpendCoinsDto {
   @ApiProperty({
@@ -19,8 +15,7 @@ export class SpendCoinsDto {
     message: 'En az 1 jeton harcanabilir.',
   })
   @Max(10000, {
-    message:
-      'Tek işlemde en fazla 10000 jeton harcanabilir.',
+    message: 'Tek işlemde en fazla 10000 jeton harcanabilir.',
   })
   amount: number;
 }

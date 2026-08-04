@@ -27,34 +27,25 @@ export class AccessTokenGuard implements CanActivate {
     private readonly configService: ConfigService,
   ) {}
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean> {
-    const request =
-      context.switchToHttp().getRequest<AuthenticatedRequest>();
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
-    const token =
-      this.extractTokenFromHeader(request);
+    const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException(
-        'Access token bulunamadı.',
-      );
+      throw new UnauthorizedException('Access token bulunamadı.');
     }
 
     try {
       const accessTokenSecret =
-        this.configService.getOrThrow<string>(
-          'JWT_ACCESS_SECRET',
-        );
+        this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
 
-      const payload =
-        await this.jwtService.verifyAsync<AccessTokenPayload>(
-          token,
-          {
-            secret: accessTokenSecret,
-          },
-        );
+      const payload = await this.jwtService.verifyAsync<AccessTokenPayload>(
+        token,
+        {
+          secret: accessTokenSecret,
+        },
+      );
 
       request.user = payload;
 
@@ -66,22 +57,16 @@ export class AccessTokenGuard implements CanActivate {
     }
   }
 
-  private extractTokenFromHeader(
-    request: Request,
-  ): string | undefined {
-    const authorization =
-      request.headers.authorization;
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const authorization = request.headers.authorization;
 
     if (!authorization) {
       return undefined;
     }
 
-    const [type, token] =
-      authorization.trim().split(/\s+/);
+    const [type, token] = authorization.trim().split(/\s+/);
 
-    return type === 'Bearer'
-      ? token
-      : undefined;
+    return type === 'Bearer' ? token : undefined;
   }
 }
 
