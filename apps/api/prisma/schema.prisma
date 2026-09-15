@@ -9,99 +9,176 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
-  id            String @id @default(uuid()) //id primary key olarak belirlenir ve default olarak uuid() ile benzersiz bir değer atanır.
-  email         String @unique //unique eşsizdir aynı mail kullanamazlar.
-  username      String @unique
-  passwordHash  String
-  displayName   String? //String metin belirtebilirken String? boşluk veya null değerini alabilir opsiyoneldir
+model User {
+  id           String  @id @default(uuid())
+  email        String  @unique
+  username     String  @unique
+  passwordHash String
+  displayName  String?
+
   totalXp       Int @default(0)
   level         Int @default(1)
   CurrentStreak Int @default(0)
   longestStreak Int @default(0)
   hearts        Int @default(5)
   coins         Int @default(0)
-  refreshTokenHash  String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+
+  refreshTokenHash String?
   lastActivityDate DateTime?
-  lessonProgresses UserLessonProgress[]
+
+  lessonProgresses  UserLessonProgress[]
+  challengeAttempts UserChallengeAttempt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Course{
-  id  String @id @default(uuid()) //id primary key, default olarak uuid ile benzersiz değer atanır
-  title String //Kursun adı
-  slug String @unique //url ve api sorgularında kullanıılacak benzersiz alan
+model Course {
+  id          String  @id @default(uuid())
+  title       String
+  slug        String  @unique
   description String?
-  icon String?
-  order Int @default(0) //default değeri 0
-  isPublished Boolean @default(false)//default değeri false. kursun kullanıcılarda görünür olup olmadığını belirleriz
+  icon        String?
+  order       Int     @default(0)
+  isPublished Boolean @default(false)
 
-  sections Section[] //Bu kayda bağlı birden fazla bölüm (Section) olabilir. ilişkiler için kullanılır
+  sections Section[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Section {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  order       Int     @default(0)
+  isPublished Boolean @default(false)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  lessons Lesson[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  
-}
-
-model Section { //Kurs içindeki ana konu gruplarını temsil eder: Java temelleri,oop,kontrol yapıları gibi
-  id          String    @id @default(uuid())
-  title       String //bölüm adı
-  description String?
-  order       Int       @default(0)
-  isPublished Boolean   @default(false)
-
-  courseId    String
-  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade) //courseId alanının, Course modelindeki id ile bağlandığını belirtir. cpırse sanaldır fiziki bir sütün kolon oluşulmaz. dbde sadece course ıd tutulur
-
-  lessons     Lesson[]
-
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
   @@index([courseId])
 }
 
-model Lesson { //dersin asıl içeriğini tutar 
-  id             String               @id @default(uuid())
-  title          String
-  slug           String
-  description    String?
-  content        String
-  order          Int                  @default(0)
-  xpReward       Int                  @default(10) //ders sonu kazanılacak ödüller
-  coinReward     Int                  @default(5)
-  estimatedTime  Int? //tahmini dersi tamamlama süresi
-  isPublished    Boolean              @default(false)
+model Lesson {
+  id            String  @id @default(uuid())
+  title         String
+  slug          String
+  description   String?
+  content       String
+  order         Int     @default(0)
+  xpReward      Int     @default(10)
+  coinReward    Int     @default(5)
+  estimatedTime Int?
+  isPublished   Boolean @default(false)
 
-  sectionId      String
-  section        Section              @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
-  userProgress   UserLessonProgress[]
+  userProgress UserLessonProgress[]
+  challenges   Challenge[]
 
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([sectionId, slug])
   @@index([sectionId])
 }
 
-model UserLessonProgress { //kullanıcının ders ilerlemesini tutar.
+model UserLessonProgress {
   id          String    @id @default(uuid())
   isCompleted Boolean   @default(false)
   completedAt DateTime?
 
-  userId      String
-  lessonId    String
+  userId   String
+  lessonId String
 
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade) //userId alanını User tablosundaki id ile eşler. kişiye özel verileri getirmek için kullanırız bu ilişki ağını
-  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade) //lessonId alanını Lesson tablosundaki id ile eşler.
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([userId, lessonId]) //kullanıcının dersi tekrar tamamlayıp xp kazanmasını engeller.
+  @@unique([userId, lessonId])
   @@index([userId])
   @@index([lessonId])
+}
+
+enum ChallengeType {
+  MULTIPLE_CHOICE
+  FILL_IN_THE_BLANK
+  ORDER_CODE
+  FIND_BUG
+  OUTPUT_PREDICTION
+}
+
+model Challenge {
+  id          String        @id @default(uuid())
+  type        ChallengeType
+  question    String
+  description String?
+  codeSnippet String?
+
+  order       Int     @default(0)
+  xpReward    Int     @default(5)
+  coinReward  Int     @default(0)
+  isPublished Boolean @default(false)
+
+  correctAnswer Json
+  explanation   String?
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  options  ChallengeOption[]
+  attempts UserChallengeAttempt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([lessonId, order])
+  @@index([lessonId])
+}
+
+model ChallengeOption {
+  id    String @id @default(uuid())
+  text  String
+  order Int    @default(0)
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([challengeId, order])
+  @@index([challengeId])
+}
+
+model UserChallengeAttempt {
+  id String @id @default(uuid())
+
+  submittedAnswer Json
+  isCorrect       Boolean
+
+  earnedXp    Int @default(0)
+  earnedCoins Int @default(0)
+
+  userId      String
+  challengeId String
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([challengeId])
+  @@index([userId, challengeId])
 }

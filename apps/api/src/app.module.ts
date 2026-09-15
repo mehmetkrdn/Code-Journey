@@ -12,6 +12,7 @@ import { CoinsModule } from './coins/coins.module';
 import { StreakModule } from './streak/streak.module';
 import { CoursesModule } from './courses/courses.module';
 import { LessonsModule } from './lessons/lessons.module';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LessonsModule } from './lessons/lessons.module';
     StreakModule,
     CoursesModule,
     LessonsModule,
+    ChallengesModule,
   ],
   controllers: [AppController],
 })
