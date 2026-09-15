@@ -2,9 +2,10 @@
 
 Code Journey, programlama öğrenimini oyunlaştırılmış bir mobil deneyime dönüştürmeyi amaçlayan eğitim uygulamasıdır.
 
-Kullanıcılar kursları ve dersleri takip edebilir, ders tamamlayarak XP ve coin kazanabilir, seviye atlayabilir ve günlük çalışma serilerini koruyabilir.
+Kullanıcılar kursları ve dersleri takip edebilir, etkileşimli kodlama challenge'larını çözebilir, XP ve coin kazanabilir, seviye atlayabilir ve günlük çalışma serilerini koruyabilir.
 
-En güncel hali feature/lesson-system branchinde yer almaktadır.
+En güncel geliştirmeler `feature/challenge-system` branchinde yer almaktadır.
+
 ## Kullanılan Teknolojiler
 
 ### Mobil
@@ -76,13 +77,37 @@ code-journey/
 - Ders kilitleme sistemi
 - Prisma seed sistemi
 
-## Ders Yapısı
+### Challenge System
+
+- Derslere bağlı challenge yapısı
+- Kullanıcı challenge denemelerinin kaydedilmesi
+- Backend tarafında cevap doğrulama
+- Doğru cevabın istemciden gizlenmesi
+- İlk doğru cevapta XP ve coin ödülü
+- Aynı challenge üzerinden tekrar ödül kazanmayı engelleme
+- Challenge bazlı kullanıcı ilerlemesi
+- Ders bazlı challenge ilerleme yüzdesi
+- İlk tamamlanma zamanının takibi
+- Deneme ve doğru cevap sayısının takibi
+
+Desteklenen challenge türleri:
+
+- `MULTIPLE_CHOICE`
+- `FILL_IN_THE_BLANK`
+- `ORDER_CODE`
+- `FIND_BUG`
+- `OUTPUT_PREDICTION`
+
+## Eğitim Yapısı
 
 ```text
 Course
 └── Section
     └── Lesson
-        └── UserLessonProgress
+        ├── UserLessonProgress
+        └── Challenge
+            ├── ChallengeOption
+            └── UserChallengeAttempt
 ```
 
 Örnek:
@@ -91,6 +116,11 @@ Course
 Java
 └── Java Temelleri
     ├── Java Değişkenleri
+    │   ├── Çoktan Seçmeli
+    │   ├── Boşluk Doldurma
+    │   ├── Kod Sıralama
+    │   ├── Hata Bulma
+    │   └── Çıktı Tahmini
     ├── Java Veri Tipleri
     └── Java Operatörleri
 ```
@@ -140,6 +170,45 @@ Aşağıdaki birleşik benzersiz kural kullanılır:
 
 Bu kural sayesinde aynı kullanıcı için aynı derse ait ikinci bir ilerleme kaydı oluşturulamaz.
 
+### Challenge
+
+Bir derse ait etkileşimli soruyu temsil eder.
+
+Challenge içerisinde:
+
+- Soru tipi
+- Soru
+- Kod parçası
+- Sıra
+- XP ödülü
+- Coin ödülü
+- Doğru cevap
+- Açıklama
+
+bilgileri tutulabilir.
+
+Doğru cevap `correctAnswer` alanında tutulur ve normal challenge listeleme endpointlerinde istemciye gönderilmez.
+
+### ChallengeOption
+
+Seçenek veya sıralanabilir kod parçalarını tutar.
+
+Örneğin `MULTIPLE_CHOICE` challenge'larında cevap seçenekleri, `ORDER_CODE` challenge'larında ise sıralanacak kod satırları için kullanılır.
+
+### UserChallengeAttempt
+
+Kullanıcının challenge için yaptığı her denemeyi kaydeder.
+
+Kaydedilen temel bilgiler:
+
+- Gönderilen cevap
+- Cevabın doğru veya yanlış olması
+- Kazanılan XP
+- Kazanılan coin
+- Deneme zamanı
+
+Bir kullanıcı aynı challenge'ı birden fazla kez deneyebilir ancak ödül yalnızca ilk doğru cevapta verilir.
+
 ## Ders Tamamlama Akışı
 
 ```text
@@ -178,9 +247,102 @@ Kilitli bir ders tamamlanmaya çalışılırsa API:
 
 cevabı döndürür.
 
+## Challenge Akışı
+
+Challenge'lar derslere bağlı olarak çalışır.
+
+```text
+Ders
+ ↓
+Challenge
+ ↓
+Kullanıcı cevabı
+ ↓
+Backend cevap kontrolü
+ ↓
+UserChallengeAttempt
+ ↓
+Doğru cevap
+ ↓
+İlk doğru cevap mı?
+ ├── Evet → XP + Coin
+ └── Hayır → Ödül verilmez
+```
+
+Doğru cevap kontrolü backend tarafında gerçekleştirilir.
+
+Normal challenge listeleme işlemlerinde:
+
+```text
+correctAnswer
+explanation
+```
+
+alanları istemciye gönderilmez.
+
+`explanation`, kullanıcı cevabını gönderdikten sonra gösterilir.
+
+## Challenge Türleri
+
+### MULTIPLE_CHOICE
+
+Kullanıcı verilen seçeneklerden doğru cevabı seçer.
+
+### FILL_IN_THE_BLANK
+
+Kullanıcı kod veya metin içerisindeki eksik bölümü tamamlar.
+
+### ORDER_CODE
+
+Kullanıcı karışık halde verilen kod satırlarını doğru sıraya getirir.
+
+### FIND_BUG
+
+Kullanıcı hatalı kodu inceleyerek doğru halini gönderir.
+
+### OUTPUT_PREDICTION
+
+Kullanıcı verilen kodu çalıştırmadan programın çıktısını tahmin eder.
+
+## Challenge Progress
+
+Challenge ilerlemesi kullanıcı bazlı takip edilir.
+
+Tek bir challenge için:
+
+- Tamamlanma durumu
+- Toplam deneme sayısı
+- Doğru deneme sayısı
+- İlk tamamlanma zamanı
+- Kazanılan XP
+- Kazanılan coin
+
+bilgileri hesaplanabilir.
+
+Ders bazında ise:
+
+```text
+Toplam Challenge
+Tamamlanan Challenge
+Kalan Challenge
+İlerleme Yüzdesi
+Tamamlanma Durumu
+```
+
+hesaplanır.
+
+Örneğin:
+
+```text
+5 Challenge
+3 Tamamlandı
+2 Kaldı
+%60 İlerleme
+```
+
 ## Prisma Seed
 
-Başlangıç kurs ve ders verileri `prisma/seed.ts` dosyası üzerinden eklenir.
+Başlangıç kurs, ders ve challenge verileri `prisma/seed.ts` dosyası üzerinden eklenir.
 
 Seed işlemi:
 
@@ -190,12 +352,17 @@ npx prisma db seed
 
 Seed dosyasında `upsert` kullanılır. Böylece seed komutu tekrar çalıştırıldığında aynı kayıtlar ikinci kez oluşturulmaz.
 
-Eklenen örnek içerik:
+Örnek içerik:
 
 ```text
 Java
 └── Java Temelleri
     ├── Java Değişkenleri
+    │   ├── MULTIPLE_CHOICE
+    │   ├── FILL_IN_THE_BLANK
+    │   ├── ORDER_CODE
+    │   ├── FIND_BUG
+    │   └── OUTPUT_PREDICTION
     ├── Java Veri Tipleri
     └── Java Operatörleri
 ```
@@ -271,6 +438,17 @@ GET  /api/lessons/:id/progress
 POST /api/lessons/:id/complete
 ```
 
+### Challenges
+
+```http
+GET  /api/lessons/:lessonId/challenges
+POST /api/challenges/:id/submit
+GET  /api/challenges/:id/progress
+GET  /api/lessons/:lessonId/challenges/progress
+```
+
+Challenge cevaplama ve kullanıcı ilerleme endpointleri JWT Access Token ile korunmaktadır.
+
 ## Ortam Değişkenleri
 
 Backend için `apps/api/.env` dosyası oluşturulmalıdır.
@@ -310,7 +488,7 @@ Paketleri yükle:
 npm install
 ```
 
-PostgreSQL container’ını çalıştır:
+PostgreSQL container'ını çalıştır:
 
 ```bash
 cd ../../infrastructure
@@ -329,7 +507,7 @@ Prisma Client oluştur:
 npx prisma generate
 ```
 
-Migration’ları uygula:
+Migration'ları uygula:
 
 ```bash
 npx prisma migrate dev
@@ -341,7 +519,7 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
-Backend’i başlat:
+Backend'i başlat:
 
 ```bash
 npm run start:dev
@@ -373,7 +551,7 @@ PostgreSQL işlemlerini type-safe şekilde yapmak ve veritabanı değişiklikler
 
 ### PostgreSQL
 
-Kullanıcılar, kurslar, bölümler, dersler ve ilerleme kayıtları arasında ilişkisel yapı bulunduğu için tercih edildi.
+Kullanıcılar, kurslar, bölümler, dersler, challenge'lar ve ilerleme kayıtları arasında ilişkisel yapı bulunduğu için tercih edildi.
 
 ### bcrypt
 
@@ -387,4 +565,6 @@ Mobil uygulamadaki kullanıcı oturumlarını ve korumalı endpoint erişimini y
 
 Backend endpointlerini mobil arayüz tamamlanmadan önce tarayıcı üzerinden test etmek için kullanıldı.
 
+### Prisma Transaction
 
+Ders tamamlama ve challenge ödüllendirme gibi birden fazla veritabanı işleminin birlikte güvenli şekilde gerçekleştirilmesi için kullanıldı.
